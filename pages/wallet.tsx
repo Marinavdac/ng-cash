@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import TransactionsTable from '../src/components/TransactionsTable';
+import TransactionsTable from '../src/components/Transactions';
 
 export default function Wallet() {
  

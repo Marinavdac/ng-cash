@@ -1,24 +1,39 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Logo from '../public/logo_ng.png';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
-import { loadStripe } from '@stripe/stripe-js';
-
-const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
-
-
-interface IEmail {
-  email: string;
-}
 export default function Home() {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
-  const handleEmail = ({ email }: IEmail) => {
-    setEmail(email);
-  };
-  console.log(email);
+  const [isLogged, setIsLogged] = useState(false);
+  const [failedTryLogin, setFailedTryLogin] = useState(false);
+  const router = useRouter();
+//     const login = async (event) => {
+//       event.preventDefault();
+//   
+//       try {
+//         const { token } = await requestLogin('/login', { username, password });
+//   
+//         setToken(token);
+// 
+//   
+//         localStorage.setItem('token',  token);
+//   
+//         setIsLogged(true);
+//       } catch (error) {
+//         setFailedTryLogin(true);
+//         setIsLogged(false);
+//       }
+//     };
+//   
+//     useEffect(() => {
+//       setFailedTryLogin(false);
+//     }, [username, password]);
+//   
+    // if (isLogged) return <Navigate to="/wallet" />;
 
   return (
     <div className="h-full">
@@ -35,13 +50,15 @@ export default function Home() {
             className="w-11/12 content-center border-2 text-center"
             type="email"
             placeholder="E-mail"
-            value={email}
+            value={ username }
+            onChange={ ({ target: { value } }) => setUsername(value) }
           />
           <input
             className="w-11/12 border-2 text-center"
             type="password"
             placeholder="Password"
-            value={password}
+            value={ password }
+              onChange={ ({ target: { value } }) => setPassword(value) }
           />
           <button
             className="rounded-full bg-indigo-700 w-11/12	 mt-6 p-1 hover:bg-indigo-500 text-neutral-50	"
@@ -49,12 +66,26 @@ export default function Home() {
           >
             Sign In
           </button>
+          <Link  className="rounded-full bg-lime-700 hover:bg-lime-500 text-neutral-50 w-11/12 p-1 text-center" rel="/signup" href={'/signup'}>
           <button
-            className="rounded-full bg-lime-700 hover:bg-lime-500 text-neutral-50	 w-11/12 p-1"
-            type="submit"
-          >
+              type='button'
+              onClick={ () => router.push('/signup')}
+          >    
             Sign Up
           </button>
+          </Link>
+          {
+            (failedTryLogin)
+              ? (
+                <p>
+                  {
+                    `O endereço de e-mail ou a senha não estão corretos.
+                    Por favor, tente novamente.`
+                  }
+                </p>
+              )
+              : null
+          }
         </form>
       </main>
     </div>

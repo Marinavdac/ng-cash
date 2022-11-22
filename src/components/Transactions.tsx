@@ -1,6 +1,6 @@
 const TransactionsTable = () => {
   return (
-    <table>
+    <table className="table-auto">
     <thead>
         <tr>
             <th colSpan={2}>The table header</th>
